@@ -12,10 +12,14 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # -------------------------------
-# 🧠 NLTK Setup
+# 🧠 NLTK Setup (Fixed Downloader)
 # -------------------------------
-nltk.download('punkt')
-nltk.download('stopwords')
+try:
+    nltk.data.find("tokenizers/punkt_tab")
+except LookupError:
+    nltk.download("punkt")
+    nltk.download("stopwords")
+    nltk.download("punkt_tab")
 
 # -------------------------------
 # 📘 Step 1: Collect FAQs
@@ -92,17 +96,14 @@ page_bg = f"""
 [data-testid="stAppViewContainer"] {{
     background-color: {bg_colors[theme]};
 }}
-
 [data-testid="stSidebar"] {{
-    background-color: #144272; /* Softer dark blue */
+    background-color: #144272;
     color: white;
 }}
-
 [data-testid="stSidebar"] .st-radio label {{
     color: white;
     font-weight: 500;
 }}
-
 [data-testid="stSidebar"] .stButton>button {{
     color: white;
     background-color: #205295;
@@ -110,7 +111,6 @@ page_bg = f"""
     border: none;
     transition: 0.3s;
 }}
-
 [data-testid="stSidebar"] .stButton>button:hover {{
     background-color: #2C74B3;
     transform: scale(1.03);
@@ -164,8 +164,3 @@ if user_input:
 # Display chat history
 for role, message in st.session_state["chat_history"]:
     st.markdown(f"**{role}:** {message}")
-
-
-
-
-
